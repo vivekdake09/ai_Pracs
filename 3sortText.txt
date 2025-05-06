@@ -1,0 +1,281 @@
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+
+
+     
+
+def selection_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        min_index = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_index]:
+                min_index = j
+        arr[i], arr[min_index] = arr[min_index], arr[i]
+
+
+     
+
+def merge_sort(arr):
+    if len(arr) > 1:
+        mid = len(arr) // 2
+        left_half = arr[:mid]
+        right_half = arr[mid:]
+
+        merge_sort(left_half)
+        merge_sort(right_half)
+
+        i = j = k = 0
+
+        while i < len(left_half) and j < len(right_half):
+            if left_half[i] < right_half[j]:
+                arr[k] = left_half[i]
+                i += 1
+            else:
+                arr[k] = right_half[j]
+                j += 1
+            k += 1
+
+        while i < len(left_half):
+            arr[k] = left_half[i]
+            i += 1
+            k += 1
+
+        while j < len(right_half):
+            arr[k] = right_half[j]
+            j += 1
+            k += 1
+
+
+     
+
+input_str = input("Enter space-separated integers for the array: ")
+arr = list(map(int, input_str.split()))
+
+
+     
+
+sorting_method = input("Enter sorting method (bubble/selection/merge): ").lower()
+
+
+     
+
+if sorting_method == 'bubble':
+    bubble_sorted_arr = list(arr)
+    bubble_sort(bubble_sorted_arr)
+    print("Bubble Sorted Array:", bubble_sorted_arr)
+elif sorting_method == 'selection':
+    selection_sorted_arr = list(arr)
+    selection_sort(selection_sorted_arr)
+    print("Selection Sorted Array:", selection_sorted_arr)
+elif sorting_method == 'merge':
+    merge_sorted_arr = list(arr)
+    merge_sort(merge_sorted_arr)
+    print("Merge Sorted Array:", merge_sorted_arr)
+else:
+    print("Invalid sorting method. Please enter 'bubble', 'selection', or 'merge'.")
+
+
+
+/*
+Here's the complete explanation, dry run, and viva questions with answers for the Sorting Algorithms Program:
+
+✅ Code Explanation (Line by Line)
+python
+Copy
+Edit
+def bubble_sort(arr):
+    n = len(arr)
+Defines a function bubble_sort. It takes a list arr and stores its length in n.
+
+python
+Copy
+Edit
+    for i in range(n):
+        for j in range(0, n-i-1):
+Outer loop runs n times.
+
+Inner loop compares adjacent elements from start till n-i-1 (as the largest elements bubble to the end).
+
+python
+Copy
+Edit
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+If an element is greater than the next one, they are swapped. This brings the largest element to the end in each pass.
+
+python
+Copy
+Edit
+def selection_sort(arr):
+    n = len(arr)
+selection_sort function starts; stores length of arr in n.
+
+python
+Copy
+Edit
+    for i in range(n):
+        min_index = i
+Loops through the array, assuming the current index has the minimum value.
+
+python
+Copy
+Edit
+        for j in range(i+1, n):
+            if arr[j] < arr[min_index]:
+                min_index = j
+Compares the assumed minimum with the rest. Updates min_index if a smaller value is found.
+
+python
+Copy
+Edit
+        arr[i], arr[min_index] = arr[min_index], arr[i]
+Swaps the minimum element found with the element at current index i.
+
+python
+Copy
+Edit
+def merge_sort(arr):
+    if len(arr) > 1:
+        mid = len(arr) // 2
+        left_half = arr[:mid]
+        right_half = arr[mid:]
+merge_sort function splits the array into two halves if it has more than one element.
+
+python
+Copy
+Edit
+        merge_sort(left_half)
+        merge_sort(right_half)
+Recursively sorts both halves.
+
+python
+Copy
+Edit
+        i = j = k = 0
+Initializes pointers for merging.
+
+python
+Copy
+Edit
+        while i < len(left_half) and j < len(right_half):
+            if left_half[i] < right_half[j]:
+                arr[k] = left_half[i]
+                i += 1
+            else:
+                arr[k] = right_half[j]
+                j += 1
+            k += 1
+Compares and merges elements from both halves into the main array.
+
+python
+Copy
+Edit
+        while i < len(left_half):
+            arr[k] = left_half[i]
+            i += 1
+            k += 1
+Appends remaining elements from the left half if any.
+
+python
+Copy
+Edit
+        while j < len(right_half):
+            arr[k] = right_half[j]
+            j += 1
+            k += 1
+Appends remaining elements from the right half if any.
+
+python
+Copy
+Edit
+input_str = input("Enter space-separated integers for the array: ")
+arr = list(map(int, input_str.split()))
+Takes user input and converts it into a list of integers.
+
+python
+Copy
+Edit
+sorting_method = input("Enter sorting method (bubble/selection/merge): ").lower()
+Asks user for sorting method and converts to lowercase.
+
+python
+Copy
+Edit
+if sorting_method == 'bubble':
+    bubble_sorted_arr = list(arr)
+    bubble_sort(bubble_sorted_arr)
+    print("Bubble Sorted Array:", bubble_sorted_arr)
+Calls bubble_sort if user entered bubble.
+
+python
+Copy
+Edit
+elif sorting_method == 'selection':
+    selection_sorted_arr = list(arr)
+    selection_sort(selection_sorted_arr)
+    print("Selection Sorted Array:", selection_sorted_arr)
+Calls selection_sort if selected.
+
+python
+Copy
+Edit
+elif sorting_method == 'merge':
+    merge_sorted_arr = list(arr)
+    merge_sort(merge_sorted_arr)
+    print("Merge Sorted Array:", merge_sorted_arr)
+Calls merge_sort if selected.
+
+python
+Copy
+Edit
+else:
+    print("Invalid sorting method. Please enter 'bubble', 'selection', or 'merge'.")
+Displays error message if user input is invalid.
+
+🔍 Dry Run Example
+Input:
+arr = [4, 3, 9, 6, 7, 1]
+sorting_method = bubble
+
+Dry run of bubble_sort:
+
+Pass 1: [3, 4, 6, 7, 1, 9]
+
+Pass 2: [3, 4, 6, 1, 7, 9]
+
+Pass 3: [3, 4, 1, 6, 7, 9]
+
+Pass 4: [3, 1, 4, 6, 7, 9]
+
+Pass 5: [1, 3, 4, 6, 7, 9]
+
+Final Output:
+Bubble Sorted Array: [1, 3, 4, 6, 7, 9]
+
+📚 Viva Questions & Answers
+Q1. What is the time complexity of bubble sort?
+A1. Worst and average case: O(n²); Best case (already sorted): O(n)
+
+Q2. How does selection sort work?
+A2. It repeatedly selects the minimum element from the unsorted part and puts it in the sorted part.
+
+Q3. What is the advantage of merge sort over bubble and selection?
+A3. Merge sort is more efficient (O(n log n)) and suitable for large datasets.
+
+Q4. Is merge sort in-place?
+A4. No, it uses additional space for merging arrays.
+
+Q5. Which sorting algorithm is stable among the three?
+A5. Bubble sort and merge sort are stable; selection sort is not stable by default.
+
+Q6. What is a stable sorting algorithm?
+A6. It preserves the relative order of records with equal keys.
+
+Q7. What reasoning technique is used here?
+A7. The algorithms apply procedural reasoning, where decisions (swaps, merges) are made based on step-by-step logical rules.
+*/
