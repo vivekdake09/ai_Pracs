@@ -52,7 +52,15 @@ total_distance = calculate_total_distance(tour, city_coordinates)
 print("Optimal tour:", tour)
 print("Total distance:", total_distance)
 
-
+//
+Step	Current City (Index)	Coordinates	Nearest City Chosen (Index)	Nearest City Coordinates	Distance
+1	1	(2, 3)	5	(3, 5)	2.24
+2	5	(3, 5)	2	(5, 4)	2.24
+3	2	(5, 4)	4	(6, 1)	3.16
+4	4	(6, 1)	0	(0, 0)	6.08
+5	0	(0, 0)	3	(1, 6)	6.08
+6	3	(1, 6)	1 (start city)	(2, 3)	3.16
+[1, 5, 2, 4, 0, 3]
 
 /*
 1. What is the Travelling Salesperson Problem (TSP)?
@@ -100,45 +108,6 @@ That’s why heuristics or approximations are used in practice for large dataset
 6. What does np.linalg.norm() compute in this context?
 It calculates the Euclidean distance between two points (cities).
 
-Formula:
-
-Distance
-=
-(
-𝑥
-2
-−
-𝑥
-1
-)
-2
-+
-(
-𝑦
-2
-−
-𝑦
-1
-)
-2
-Distance= 
-(x 
-2
-​
- −x 
-1
-​
- ) 
-2
- +(y 
-2
-​
- −y 
-1
-​
- ) 
-2
- 
 ​
  
 7. Why is the tour made circular using % len(tour)?
@@ -156,37 +125,6 @@ Improves performance for checking membership (O(1) in a set).
 9. What is the time complexity of this algorithm?
 O(n²)
 
-For each of the n cities, it looks through all unvisited cities to find the nearest → total comparisons:
-
-𝑂
-(
-𝑛
-)
-+
-𝑂
-(
-𝑛
-−
-1
-)
-+
-𝑂
-(
-𝑛
-−
-2
-)
-+
-⋯
-=
-𝑂
-(
-𝑛
-2
-)
-O(n)+O(n−1)+O(n−2)+⋯=O(n 
-2
- )
 📙 Practical Extensions
 10. How would you improve this algorithm for better accuracy?
 Apply local search optimizations like:
