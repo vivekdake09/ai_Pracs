@@ -98,3 +98,215 @@ while running:
 # Quit Pygame
 pygame.quit()
 sys.exit()
+
+
+
+
+
+/*theory:
+✅ LINE-BY-LINE EXPLANATION
+python
+Copy
+Edit
+import pygame
+import sys
+import random
+Imports required libraries: pygame for game display, sys to exit the program, and random (though not used here).
+
+python
+Copy
+Edit
+pygame.init()
+Initializes all Pygame modules.
+
+python
+Copy
+Edit
+WIDTH, HEIGHT = 300, 300
+GRID_SIZE = 3
+CELL_SIZE = WIDTH // GRID_SIZE
+Defines the window size and grid settings (3x3 board, each cell is 100x100).
+
+python
+Copy
+Edit
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+RGB color definitions.
+
+python
+Copy
+Edit
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Tic-Tac-Toe")
+Creates the game window and sets the window title.
+
+python
+Copy
+Edit
+board = [[' ' for _ in range(GRID_SIZE)] for _ in range(GRID_SIZE)]
+Initializes a 3x3 game board with blank spaces.
+
+🔲 Drawing Functions
+python
+Copy
+Edit
+def draw_grid():
+    for i in range(1, GRID_SIZE):
+        pygame.draw.line(screen, BLACK, (i * CELL_SIZE, 0), (i * CELL_SIZE, HEIGHT), 2)
+        pygame.draw.line(screen, BLACK, (0, i * CELL_SIZE), (WIDTH, i * CELL_SIZE), 2)
+Draws vertical and horizontal grid lines on the screen.
+
+python
+Copy
+Edit
+def draw_symbol(row, col, symbol):
+    font = pygame.font.Font(None, 100)
+    text = font.render(symbol, True, BLACK)
+    text_rect = text.get_rect(center=((col * CELL_SIZE) + CELL_SIZE // 2, (row * CELL_SIZE) + CELL_SIZE // 2))
+    screen.blit(text, text_rect)
+Displays X or O in the appropriate cell with proper alignment.
+
+🏆 Game Logic Functions
+python
+Copy
+Edit
+def check_winner(symbol):
+    for i in range(GRID_SIZE):
+        if all(board[i][j] == symbol for j in range(GRID_SIZE)) or all(board[j][i] == symbol for j in range(GRID_SIZE)):
+            return True
+    if all(board[i][i] == symbol for i in range(GRID_SIZE)) or all(board[i][GRID_SIZE - 1 - i] == symbol for i in range(GRID_SIZE)):
+        return True
+    return False
+Checks all rows, columns, and diagonals to determine if the given player (X or O) has won.
+
+python
+Copy
+Edit
+def is_board_full():
+    return all(board[i][j] != ' ' for i in range(GRID_SIZE) for j in range(GRID_SIZE))
+Returns True if there are no empty cells left on the board.
+
+python
+Copy
+Edit
+def reset_game():
+    global board
+    board = [[' ' for _ in range(GRID_SIZE)] for _ in range(GRID_SIZE)]
+Resets the game board to empty cells.
+
+🎮 Main Game Loop
+python
+Copy
+Edit
+turn = 'X'
+running = True
+Game starts with player X, and loop runs until running becomes False.
+
+python
+Copy
+Edit
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+Checks for quit event (closing the window).
+
+python
+Copy
+Edit
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            mouseX, mouseY = event.pos
+            clicked_row = mouseY // CELL_SIZE
+            clicked_col = mouseX // CELL_SIZE
+Gets mouse click position and calculates the row and column clicked.
+
+python
+Copy
+Edit
+            if 0 <= clicked_row < GRID_SIZE and 0 <= clicked_col < GRID_SIZE and board[clicked_row][clicked_col] == ' ':
+                board[clicked_row][clicked_col] = turn
+If the clicked cell is valid and empty, places the current player's symbol.
+
+python
+Copy
+Edit
+                if check_winner(turn):
+                    print(f'{turn} wins!')
+                    reset_game()
+                elif is_board_full():
+                    print("It's a draw!")
+                    reset_game()
+                turn = 'O' if turn == 'X' else 'X'
+Checks for win or draw after each move. Switches turns between X and O.
+
+🖼️ Redraw Screen
+python
+Copy
+Edit
+    screen.fill(WHITE)
+    draw_grid()
+    for row in range(GRID_SIZE):
+        for col in range(GRID_SIZE):
+            if board[row][col] != ' ':
+                draw_symbol(row, col, board[row][col])
+    pygame.display.flip()
+Clears screen, redraws grid and symbols, and updates the display.
+
+python
+Copy
+Edit
+pygame.quit()
+sys.exit()
+Exits the Pygame application.
+
+🧠 DRY RUN EXAMPLE
+Scenario:
+Player X clicks (row=0, col=0).
+
+Player O clicks (row=1, col=1).
+
+Player X clicks (row=0, col=1).
+
+Player O clicks (row=2, col=2).
+
+Player X clicks (row=0, col=2) → wins.
+
+Output:
+nginx
+Copy
+Edit
+X wins!
+Then, board resets and a new game starts.
+
+📚 THEORY (Game Theory in Tic-Tac-Toe)
+Zero-Sum Game: One player wins, the other loses.
+
+Deterministic Game: No randomness, only players' moves.
+
+Perfect Information: Both players see the entire board.
+
+Strategy: The order of moves affects the outcome.
+
+Minimax (not implemented here): Could be used for AI opponent.
+
+🎤 VIVA QUESTIONS & ANSWERS
+1. What is Game Theory?
+Ans: Game Theory is a branch of mathematics that studies strategic interactions where the outcome depends on the actions of all players involved.
+
+2. How does Tic-Tac-Toe relate to Game Theory?
+Ans: Tic-Tac-Toe is a two-player, zero-sum, perfect information game. It models strategic decision-making, which is the core of Game Theory.
+
+3. How are win conditions checked in the code?
+Ans: By iterating through rows, columns, and diagonals to check if the same symbol ('X' or 'O') occupies all three cells.
+
+4. What is the role of pygame.display.flip()?
+Ans: It updates the full display surface to reflect changes made to the game window.
+
+5. What happens when the board is full and no winner?
+Ans: The game is declared a draw, and the board resets.
+
+6. How can AI be added to this game?
+Ans: AI can be added using the Minimax algorithm to simulate all possible future moves and choose the best one.
+*/
