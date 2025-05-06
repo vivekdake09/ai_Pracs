@@ -1,0 +1,207 @@
+from queue import Queue
+
+def water_jug_bfs(capacity_jug1, capacity_jug2, target):
+    visited_states = set()
+    q = Queue()
+
+    # Each element in the queue will store: (jug1, jug2, path_taken)
+    q.put((0, 0, []))
+
+    while not q.empty():
+        jug1, jug2, path = q.get()
+
+        # If this state is already visited, skip it
+        if (jug1, jug2) in visited_states:
+            continue
+
+        # Mark the state as visited
+        visited_states.add((jug1, jug2))
+
+        # Add current state to path
+        current_path = path + [(jug1, jug2)]
+
+        # If we found the exact target state
+        if (jug1, jug2) == target:
+            return current_path
+
+        # All possible next operations
+        possible_states = [
+            (capacity_jug1, jug2),  # Fill jug1
+            (jug1, capacity_jug2),  # Fill jug2
+            (0, jug2),              # Empty jug1
+            (jug1, 0),              # Empty jug2
+            # Pour jug1 -> jug2
+            (jug1 - min(jug1, capacity_jug2 - jug2), jug2 + min(jug1, capacity_jug2 - jug2)),
+            # Pour jug2 -> jug1
+            (jug1 + min(jug2, capacity_jug1 - jug1), jug2 - min(jug2, capacity_jug1 - jug1))
+        ]
+
+        # Add next states to the queue
+        for state in possible_states:
+            if state not in visited_states:
+                q.put((state[0], state[1], current_path))
+
+    return None  # No solution found
+
+# Example usage
+capacity_jug1 = 5
+capacity_jug2 = 4
+target = (0,2)  # Looking for Jug1 = 0L and Jug2 = 2L
+
+result_path = water_jug_bfs(capacity_jug1, capacity_jug2, target)
+
+if result_path:
+    print("Water Jug Solution Path:")
+    for step in result_path:
+        print(f"Jug1: {step[0]}L, Jug2: {step[1]}L")
+else:
+    print("No solution found.")
+
+
+
+
+/*✅ Short Theory (Water Jug Problem using BFS):
+The Water Jug Problem is a classic AI/search problem. You're given two jugs with specific capacities and need to measure out an exact amount of water using them. Here, we use Breadth-First Search (BFS) to explore all possible states and find the shortest path to reach the target configuration.
+
+✅ Code Explanation (Line-by-Line):
+python
+Copy
+Edit
+from queue import Queue
+Imports the Queue class to use a First-In-First-Out (FIFO) structure, required for BFS.
+
+python
+Copy
+Edit
+def water_jug_bfs(capacity_jug1, capacity_jug2, target):
+This defines a function to solve the water jug problem using BFS.
+
+Parameters:
+
+capacity_jug1: Max capacity of Jug1.
+
+capacity_jug2: Max capacity of Jug2.
+
+target: Tuple representing the goal state (e.g. (0, 2)).
+
+python
+Copy
+Edit
+    visited_states = set()
+    q = Queue()
+visited_states: To avoid revisiting the same jug state.
+
+q: Queue for BFS.
+
+python
+Copy
+Edit
+    q.put((0, 0, []))  # initial state: both jugs are empty
+Start from (0, 0) – both jugs empty.
+
+The 3rd element ([]) tracks the path taken.
+
+python
+Copy
+Edit
+    while not q.empty():
+        jug1, jug2, path = q.get()
+Start BFS loop.
+
+Dequeue the current state of jugs and the path so far.
+
+python
+Copy
+Edit
+        if (jug1, jug2) in visited_states:
+            continue
+Skip already visited states.
+
+python
+Copy
+Edit
+        visited_states.add((jug1, jug2))
+Mark current state as visited.
+
+python
+Copy
+Edit
+        current_path = path + [(jug1, jug2)]
+Add current state to the path.
+
+python
+Copy
+Edit
+        if (jug1, jug2) == target:
+            return current_path
+If goal is reached, return the path.
+
+python
+Copy
+Edit
+        possible_states = [
+            (capacity_jug1, jug2),  # Fill jug1 completely
+            (jug1, capacity_jug2),  # Fill jug2 completely
+            (0, jug2),              # Empty jug1
+            (jug1, 0),              # Empty jug2
+These are the basic operations: fill or empty jugs.
+
+python
+Copy
+Edit
+            (jug1 - min(jug1, capacity_jug2 - jug2), jug2 + min(jug1, capacity_jug2 - jug2)),  # pour jug1 -> jug2
+            (jug1 + min(jug2, capacity_jug1 - jug1), jug2 - min(jug2, capacity_jug1 - jug1))   # pour jug2 -> jug1
+        ]
+Transfer water from one jug to another without spilling.
+
+python
+Copy
+Edit
+        for state in possible_states:
+            if state not in visited_states:
+                q.put((state[0], state[1], current_path))
+Enqueue next valid states that haven’t been visited.
+
+python
+Copy
+Edit
+    return None  # No solution found
+Return None if BFS finishes without reaching the target.
+
+✅ Dry Run (for target = (0,2)):
+Jug1 = 5L, Jug2 = 4L
+Goal: Get (0,2)
+
+Steps:
+
+(0,0) → Fill Jug1 → (5,0)
+
+Pour Jug1 to Jug2 → (1,4)
+
+Empty Jug2 → (1,0)
+
+Pour Jug1 to Jug2 → (0,1)
+
+Fill Jug1 again → (5,1)
+
+Pour Jug1 to Jug2 → (2,4)
+
+Empty Jug2 → (2,0)
+
+Pour Jug1 to Jug2 → (0,2) ✅ Goal reached!
+
+✅ Output:
+yaml
+Copy
+Edit
+Water Jug Solution Path:
+Jug1: 0L, Jug2: 0L
+Jug1: 5L, Jug2: 0L
+Jug1: 1L, Jug2: 4L
+Jug1: 1L, Jug2: 0L
+Jug1: 0L, Jug2: 1L
+Jug1: 5L, Jug2: 1L
+Jug1: 2L, Jug2: 4L
+Jug1: 2L, Jug2: 0L
+Jug1: 0L, Jug2: 2L
+*/
