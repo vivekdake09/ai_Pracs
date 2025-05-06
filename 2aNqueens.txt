@@ -1,0 +1,237 @@
+import random
+
+
+     
+
+def calculate_heuristic(board):
+    n = len(board)
+    conflicts = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            if board[i] == board[j] or abs(board[i] - board[j]) == abs(i - j):
+                conflicts += 1
+    return conflicts
+
+
+     
+
+def hill_climbing(n, max_restarts=1000):
+    for _ in range(max_restarts):
+        current_board = [random.randint(0, n-1) for _ in range(n)]
+        current_heuristic = calculate_heuristic(current_board)
+
+        while True:
+            neighbor = None
+            min_heuristic = current_heuristic
+
+            for col in range(n):
+                for row in range(n):
+                    if current_board[col] != row:
+                        new_board = list(current_board)
+                        new_board[col] = row
+                        new_heuristic = calculate_heuristic(new_board)
+                        if new_heuristic < min_heuristic:
+                            neighbor = new_board
+                            min_heuristic = new_heuristic
+
+            if neighbor is None:
+                break  # Local minimum
+            current_board = neighbor
+            current_heuristic = min_heuristic
+
+            if current_heuristic == 0:
+                return current_board
+
+    return None  # Failed after max_restarts
+
+
+     
+
+def print_board(board):
+    if not board:
+        print("No solution found.")
+        return
+    n = len(board)
+    for row in range(n):
+        line = ""
+        for col in range(n):
+            line += "Q " if board[col] == row else ". "
+        print(line)
+
+
+     
+
+n = 4
+solution = hill_climbing(n)
+print("N-Queens Solution:", solution)
+print_board(solution)
+
+
+
+
+
+/*
+📘 Short Theory
+✅ What is the N-Queens Problem?
+The N-Queens problem is to place N queens on an N×N chessboard such that:
+
+No two queens attack each other (i.e., no same row, column, or diagonal).
+
+✅ What is the Hill Climbing Algorithm?
+A heuristic local search algorithm.
+
+Starts from a random state and iteratively improves the solution by moving to a neighbor with a lower heuristic cost (fewer conflicts).
+
+Stops when a local minimum is reached or an optimal solution is found.
+
+📌 Code Explanation: Line by Line
+python
+Copy
+Edit
+import random
+Imports the random module to generate random starting boards.
+
+🎯 calculate_heuristic(board) – Counts Conflicts
+python
+Copy
+Edit
+def calculate_heuristic(board):
+    n = len(board)
+    conflicts = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            if board[i] == board[j] or abs(board[i] - board[j]) == abs(i - j):
+                conflicts += 1
+    return conflicts
+board: a list of size n, where board[i] = row position of the queen in column i.
+
+Checks for:
+
+Same row conflict: board[i] == board[j]
+
+Same diagonal conflict: abs(board[i] - board[j]) == abs(i - j)
+
+Returns total number of conflicting queen pairs.
+
+🧠 hill_climbing(n) – Main Hill Climbing Solver
+python
+Copy
+Edit
+def hill_climbing(n, max_restarts=1000):
+Solves N-Queens for board of size n, restarts up to max_restarts times if stuck.
+
+python
+Copy
+Edit
+    for _ in range(max_restarts):
+        current_board = [random.randint(0, n-1) for _ in range(n)]
+        current_heuristic = calculate_heuristic(current_board)
+Randomly places 1 queen per column (so column conflict is impossible).
+
+Calculates how many conflicts (attacks) are present.
+
+python
+Copy
+Edit
+        while True:
+            neighbor = None
+            min_heuristic = current_heuristic
+Search for the best neighbor with lower conflicts.
+
+python
+Copy
+Edit
+            for col in range(n):
+                for row in range(n):
+                    if current_board[col] != row:
+                        new_board = list(current_board)
+                        new_board[col] = row
+                        new_heuristic = calculate_heuristic(new_board)
+                        if new_heuristic < min_heuristic:
+                            neighbor = new_board
+                            min_heuristic = new_heuristic
+For every column, try moving the queen to every other row.
+
+If a better state (lower conflicts) is found, update the best neighbor.
+
+python
+Copy
+Edit
+            if neighbor is None:
+                break  # Local minimum
+If no better move is found, stop this local search (reached local minimum).
+
+python
+Copy
+Edit
+            current_board = neighbor
+            current_heuristic = min_heuristic
+
+            if current_heuristic == 0:
+                return current_board
+Move to the best neighbor found.
+
+If heuristic is 0, it’s a valid solution.
+
+python
+Copy
+Edit
+    return None  # Failed after max_restarts
+If no solution is found after max_restarts, return None.
+
+✅ Running the code
+python
+Copy
+Edit
+n = 10
+solution = hill_climbing(n)
+if solution:
+    print("N-Queens Solution:", solution)
+else:
+    print("No solution found.")
+Tries to solve 10-Queens using Hill Climbing.
+
+A sample valid output might be:
+N-Queens Solution: [2, 9, 1, 8, 5, 3, 0, 7, 4, 6]
+
+🧪 Dry Run Example (n=4)
+Let's say the randomly generated board is:
+
+csharp
+Copy
+Edit
+[1, 3, 0, 2]
+Each index = column; value = row → 4 queens placed.
+
+Now check each pair of queens to count conflicts, then try changing row positions to reduce them.
+
+📒 Viva Questions & Answers
+1. What is the N-Queens problem?
+Placing n queens on an n×n board such that no two queens attack each other.
+
+2. Why can't two queens be on the same column in this representation?
+Because each index of the list represents a unique column. Only rows are assigned randomly.
+
+3. What does the heuristic function do?
+It counts the number of attacking pairs (conflicts) between queens.
+
+4. What is a local minimum in hill climbing?
+A state where no neighboring state has a better heuristic, but it’s not the optimal solution.
+
+5. What is the advantage of random restarts?
+It allows the algorithm to escape local minima and explore a new search space.
+
+6. Can hill climbing guarantee the best solution?
+No. It can get stuck in local optima. Multiple restarts help increase the chances of finding a valid solution.
+
+7. What is the time complexity?
+Roughly O(n²) per restart due to the nested loop for calculating heuristics.
+
+8. How would you improve this algorithm?
+Use Simulated Annealing to allow uphill moves.
+
+Use Genetic Algorithms.
+
+Use Min-Conflicts Heuristic.
+
+*/
