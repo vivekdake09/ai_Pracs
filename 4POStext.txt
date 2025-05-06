@@ -44,3 +44,197 @@ except Exception as e:
     print("An error occurred:", e)
 
 
+/*
+✅ LINE-BY-LINE EXPLANATION
+python
+Copy
+Edit
+import nltk
+Imports the Natural Language Toolkit (NLTK), a popular library used in NLP.
+
+python
+Copy
+Edit
+nltk.download('punkt')
+nltk.download('punkt_tab')
+nltk.download('stopwords')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('averaged_perceptron_tagger_eng')
+Downloads essential NLTK data packages:
+
+punkt: For tokenization.
+
+punkt_tab: Extra tokenizer support.
+
+stopwords: Common stopwords like "is", "the", "and".
+
+averaged_perceptron_tagger: For part-of-speech (POS) tagging.
+
+averaged_perceptron_tagger_eng: English POS tagger model.
+
+python
+Copy
+Edit
+from nltk import word_tokenize, FreqDist, pos_tag
+from nltk.corpus import stopwords
+Imports specific NLTK functions:
+
+word_tokenize: Splits text into words/tokens.
+
+FreqDist: For word frequency distribution.
+
+pos_tag: Tags words with parts of speech.
+
+stopwords: To access stop words.
+
+Defined Functions
+python
+Copy
+Edit
+def text_tokenization(text):
+    return word_tokenize(text)
+Tokenizes the input text into individual words.
+
+python
+Copy
+Edit
+def count_word_frequency(tokens):
+    return FreqDist(tokens)
+Takes tokenized words and returns the frequency count of each word.
+
+python
+Copy
+Edit
+def remove_stop_words(tokens):
+    stop_words = set(stopwords.words('english'))
+    return [word for word in tokens if word.lower() not in stop_words]
+Removes common words (stop words) that do not carry significant meaning (like "is", "am", "the").
+
+python
+Copy
+Edit
+def pos_tagging(tokens):
+    return pos_tag(tokens)
+Performs POS tagging: labels each token with its part of speech (noun, verb, adjective, etc.).
+
+Input Section
+python
+Copy
+Edit
+text = input("Enter a sentence or a paragraph: ")
+User provides a paragraph or sentence.
+
+python
+Copy
+Edit
+operation = input("Select operation (a. Tokenization, b. Word Frequency, c. Remove Stop Words, d. POS Tagging): ").lower()
+User chooses the operation.
+
+Conditional Execution
+python
+Copy
+Edit
+if operation == 'a':
+    tokens = text_tokenization(text)
+    print("Tokens:", tokens)
+Tokenization operation is performed.
+
+python
+Copy
+Edit
+elif operation == 'b':
+    tokens = text_tokenization(text)
+    word_frequency = count_word_frequency(tokens)
+    print("Word Frequency:", dict(word_frequency))
+Word frequency count is printed.
+
+python
+Copy
+Edit
+elif operation == 'c':
+    tokens = text_tokenization(text)
+    tokens_without_stopwords = remove_stop_words(tokens)
+    print("Tokens without Stop Words:", tokens_without_stopwords)
+Stop words are removed and result printed.
+
+python
+Copy
+Edit
+elif operation == 'd':
+    tokens = text_tokenization(text)
+    pos_tags = pos_tagging(tokens)
+    print("POS Tags:", pos_tags)
+POS tagging is applied and output shown.
+
+python
+Copy
+Edit
+else:
+    print("Invalid operation. Please select a, b, c, or d.")
+Error handling for invalid input.
+
+📘 THEORY CONCEPTS
+1. Tokenization
+Breaking text into individual words, punctuation, or sentences.
+
+word_tokenize splits based on punctuation and whitespace.
+
+2. Word Frequency
+Measures how often each word appears.
+
+Helps in keyword extraction and sentiment analysis.
+
+3. Stop Word Removal
+Removes non-significant common words to focus on meaningful content.
+
+Helps reduce noise in NLP tasks.
+
+4. POS Tagging
+Assigns grammatical tags to words.
+
+E.g., PRP (Pronoun), VB (Verb), NN (Noun).
+
+Useful for syntactic and semantic analysis.
+
+🎤 VIVA QUESTIONS AND ANSWERS
+Q1. What is NLTK?
+
+A: NLTK (Natural Language Toolkit) is a Python library used for working with human language data, offering tools for tokenization, parsing, classification, tagging, and more.
+
+Q2. What is tokenization and which function is used here?
+
+A: Tokenization is splitting text into individual words or tokens. We used word_tokenize().
+
+Q3. What are stop words?
+
+A: Stop words are common words like “is”, “the”, “a” that are often removed to focus on keywords.
+
+Q4. What is the use of FreqDist?
+
+A: It calculates the frequency of each token in the text.
+
+Q5. What is POS tagging?
+
+A: POS tagging assigns grammatical parts of speech to each word (noun, verb, etc.), using pos_tag() in this code.
+
+Q6. Why are we using .lower() while removing stopwords?
+
+A: To make the comparison case-insensitive (e.g., "The" vs "the").
+
+Q7. What does nltk.download() do?
+
+A: It downloads necessary datasets like tokenizer models and stopword lists required by NLTK.
+
+Q8. Give an example of POS tags.
+
+A: Example: ('coding', 'VBG') means "coding" is a verb in gerund form.
+
+Q9. Is punctuation considered a token?
+
+A: Yes, punctuation marks like . or , are also treated as tokens.
+
+Q10. Where can POS tagging be used practically?
+
+A: In grammar checking, text summarization, question answering systems, and chatbots.
+*/
+
