@@ -51,3 +51,162 @@ total_distance = calculate_total_distance(tour, city_coordinates)
 
 print("Optimal tour:", tour)
 print("Total distance:", total_distance)
+
+
+
+/*
+1. What is the Travelling Salesperson Problem (TSP)?
+TSP is a classic optimization problem in which a salesperson must:
+
+Visit each city exactly once,
+
+Return to the starting city, and
+
+Do so while minimizing the total travel distance or cost.
+
+2. Why is TSP considered an NP-Hard problem?
+TSP does not have a known polynomial-time algorithm to solve it exactly.
+
+The number of possible tours is (n - 1)!/2 for n cities (undirected, symmetric case).
+
+As the number of cities increases, the number of possibilities grows exponentially.
+
+3. Explain the Nearest Neighbor heuristic.
+Start at a random city.
+
+At each step, go to the nearest unvisited city.
+
+Repeat until all cities are visited.
+
+Return to the starting city to complete the tour.
+
+4. What are the limitations of the Nearest Neighbor algorithm?
+Greedy: Chooses the local best, not the global best.
+
+Result depends on starting city.
+
+May miss better overall paths because it doesn’t backtrack.
+
+May produce suboptimal results, especially with large or irregular city layouts.
+
+5. Can TSP be solved exactly for large numbers of cities? Why or why not?
+No, not efficiently.
+
+Exact algorithms (like Dynamic Programming, Branch and Bound) become too slow as the number of cities increases.
+
+That’s why heuristics or approximations are used in practice for large datasets.
+
+📗 Code-Based Questions
+6. What does np.linalg.norm() compute in this context?
+It calculates the Euclidean distance between two points (cities).
+
+Formula:
+
+Distance
+=
+(
+𝑥
+2
+−
+𝑥
+1
+)
+2
++
+(
+𝑦
+2
+−
+𝑦
+1
+)
+2
+Distance= 
+(x 
+2
+​
+ −x 
+1
+​
+ ) 
+2
+ +(y 
+2
+​
+ −y 
+1
+​
+ ) 
+2
+ 
+​
+ 
+7. Why is the tour made circular using % len(tour)?
+To return to the starting city at the end of the tour.
+
+tour[(i + 1) % len(tour)] ensures that the last city connects back to the first, making it a closed loop.
+
+8. What is the purpose of the unvisited_cities set?
+To track which cities are not yet visited.
+
+Helps ensure each city is visited only once.
+
+Improves performance for checking membership (O(1) in a set).
+
+9. What is the time complexity of this algorithm?
+O(n²)
+
+For each of the n cities, it looks through all unvisited cities to find the nearest → total comparisons:
+
+𝑂
+(
+𝑛
+)
++
+𝑂
+(
+𝑛
+−
+1
+)
++
+𝑂
+(
+𝑛
+−
+2
+)
++
+⋯
+=
+𝑂
+(
+𝑛
+2
+)
+O(n)+O(n−1)+O(n−2)+⋯=O(n 
+2
+ )
+📙 Practical Extensions
+10. How would you improve this algorithm for better accuracy?
+Apply local search optimizations like:
+
+2-opt or 3-opt (swap segments to reduce tour length).
+
+Genetic Algorithms
+
+Simulated Annealing
+
+Ant Colony Optimization
+
+Try multiple starting points and take the best tour.
+
+11. Can this be used for real-time delivery systems? Why or why not?
+Not directly optimal for real-time use due to:
+
+Lack of dynamic updates (e.g., traffic, delays).
+
+Doesn’t handle time windows or priority deliveries.
+
+Can be used for initial routing, then refined using real-time data and adaptive algorithms.
+*/
